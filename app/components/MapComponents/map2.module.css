@@ -1,0 +1,25 @@
+.custom-tooltip {
+  position: absolute;
+  /* background: #111;
+  color: #fff; */
+  background-color: #fff;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 100;
+  transition: opacity 0.5s ease;
+}
+
+.custom-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -11.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}

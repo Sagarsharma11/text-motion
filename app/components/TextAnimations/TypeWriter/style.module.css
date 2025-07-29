@@ -1,0 +1,28 @@
+/* .container {
+  font-family: monospace;
+  font-size: 1.25rem;
+  padding: 1.5rem;
+  min-height: 120px;
+  background: transparent;
+  border-radius: 0.5rem;
+  white-space: pre-wrap;
+  position: relative;
+}
+
+.cursor::after {
+  content: '|';
+  animation: blink 1s infinite;
+  position: absolute;
+  right: -8px;
+  top: 0;
+  color: inherit;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+} */

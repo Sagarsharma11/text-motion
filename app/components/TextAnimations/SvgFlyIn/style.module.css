@@ -1,0 +1,20 @@
+.container {
+  background-color: #fcd34d; /* Tailwind yellow-300 */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  font-size: 8rem;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.char {
+  display: inline-block;
+  transform-origin: center;
+}
