@@ -20,6 +20,7 @@ const SampleWorldMaps = () => {
 
     const drawMap = async () => {
       const worldData = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+      //@ts-ignore
       const countries = topojson.feature(worldData as any, (worldData as any).objects.countries).features;
 
       svg
@@ -30,6 +31,7 @@ const SampleWorldMaps = () => {
         .data(countries)
         .enter()
         .append('path')
+        //@ts-ignore
         .attr('d', path)
         .attr('fill', 'orange')
         .attr('stroke', '#fff')

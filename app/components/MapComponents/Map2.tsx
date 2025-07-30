@@ -326,8 +326,9 @@ const Map2 = ({ selectedCountry, onCountriesLoaded, fillColor, strokeColor, glob
             .translate([newWidth / 2, newHeight / 1.65]);
 
         const path = d3.geoPath().projection(projection);
-
+        //@ts-ignore
         g.selectAll("path.country").attr("d", path);
+        //@ts-ignore
         g.selectAll("path.line").attr("d", path);
     }, [fullscreenTriggered]);
 
