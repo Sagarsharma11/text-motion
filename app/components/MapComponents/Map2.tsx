@@ -14,9 +14,11 @@ const Map2 = ({ selectedCountry, onCountriesLoaded, fillColor, strokeColor, glob
     const [countriesData, setCountriesData] = useState<any[]>([]);
     const [lineFeatures, setLineFeatures] = useState<any[]>([]);
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
 
+    const width = typeof window !== "undefined" ? window.innerWidth : 0;
+    const height = typeof window !== "undefined" ? window.innerHeight : 0;
     useEffect(() => {
         const loadMap = async () => {
             //@ts-ignore
