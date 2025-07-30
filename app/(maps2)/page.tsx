@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import MapConsole from "./MapConsole";
 import Map2 from "../components/MapComponents/Map2";
+import GenerateMapVideoComponent from "../components/GenerateMapVideoComponent/GenerateMapVideoComponent";
 
 
 const Page = () => {
@@ -15,6 +16,25 @@ const Page = () => {
   const [globalStrokeColor, setGlobalStrokeColor] = useState("#00e5ff");
 
   const [animationCycle, setAnimationCycle] = useState(0);
+  const [fullscreenTriggered, setFullscreenTriggered] = useState(false);
+
+  const enterFullscreen = () => {
+    const elem = mapContainerRef.current;
+    if (elem) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if ((elem as any).webkitRequestFullscreen) {
+        (elem as any).webkitRequestFullscreen(); // Safari
+      } else if ((elem as any).msRequestFullscreen) {
+        (elem as any).msRequestFullscreen(); // IE11
+      }
+
+      // ⚠️ Give the DOM time to fully enter fullscreen, then update the flag
+      setTimeout(() => {
+        setFullscreenTriggered(prev => !prev); // Toggle to trigger re-render
+      }, 500); // Delay helps if the browser is slow to enter fullscreen
+    }
+  };
 
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -23,9 +43,9 @@ const Page = () => {
 
   const [mapKey, setMapKey] = useState(0);
   // This runs on animation or manual select
-  const triggerMapReset = (country:any) => {
-    setSelectedCountry(country); 
-     setAnimationCycle(prev => prev + 1);
+  const triggerMapReset = (country: any) => {
+    setSelectedCountry(country);
+    setAnimationCycle(prev => prev + 1);
   };
 
   useEffect(() => {
@@ -70,26 +90,12 @@ const Page = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
 
-  const enterFullscreen = () => {
-  const elem = mapContainerRef.current;
-  if (elem) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if ((elem as any).webkitRequestFullscreen) {
-      (elem as any).webkitRequestFullscreen(); // Safari
-    } else if ((elem as any).msRequestFullscreen) {
-      (elem as any).msRequestFullscreen(); // IE11
-    }
-  }
-};
-
-
-
   return (
     <div>
       <MapConsole
         countries={countryList}
         selectedCountry={selectedCountry}
+        //@ts-ignore
         onSelectCountry={(c) => {
           setSelectedCountry(c);         // Just show it, no animation
           setAnimationStart(false);      // ✅ Stop animation if selecting manually
@@ -105,8 +111,15 @@ const Page = () => {
         enterFullscreen={enterFullscreen}
       />
 
+      <GenerateMapVideoComponent
+        selectedCountry={selectedCountry}
+        fillColor={fillColor}
+        strokeColor={strokeColor}
+        globalColor={globalStrokeColor}
+      />
+
       <Map2
-          mapContainerRef={mapContainerRef}
+        mapContainerRef={mapContainerRef}
         selectedCountry={selectedCountry}
         onCountriesLoaded={setCountryList}
         fillColor={fillColor}
@@ -114,7 +127,8 @@ const Page = () => {
         globalStrokeColor={globalStrokeColor}
         animationStart={animationStart}
         key={mapKey}
-          animationCycle={animationCycle}
+        animationCycle={animationCycle}
+        fullscreenTriggered={fullscreenTriggered}
       />
     </div>
   );

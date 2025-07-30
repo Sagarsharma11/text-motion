@@ -69,6 +69,7 @@ const MapConsole = ({
                         value={fillColor}
                         onChange={(e) => setFillColor(e.target.value)}
                         className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+                        name="fill-color"
                     />
                 </div>
 
@@ -80,6 +81,7 @@ const MapConsole = ({
                         value={strokeColor}
                         onChange={(e) => setStrokeColor(e.target.value)}
                         className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+                        name="stroke-color"
                     />
                 </div>
 
@@ -91,14 +93,15 @@ const MapConsole = ({
                         value={globalStrokeColor}
                         onChange={(e) => setGlobalStrokeColor(e.target.value)}
                         className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
+                        name="global-color"
                     />
                 </div>
 
                 {/* Stroke Color Picker */}
                 <div className="flex items-center gap-2">
-                    <Button onClick={() => setAnimationStart(!animationStart)} >
+                    <button className="border p-1 rounded bg-blue-400 text-white cursor-pointer" id="start-animation" onClick={() => setAnimationStart(!animationStart)} >
                         Start Animation Video
-                    </Button>
+                    </button>
                 </div>
 
 

@@ -7,20 +7,9 @@ import worldData from "./worldJson.json";
 import lineData from "./lines.topo.json";
 import styles from "./map2.module.css"
 
-// interface Props {
-//     selectedCountry: string;
-//     onCountriesLoaded: (names: string[]) => void;
-//     fillColor: string;
-//     strokeColor: string;
-//     globalStrokeColor: string;
-//     animationStart: boolean;
-//     key: number
-// }
-
 const Map2 = ({ selectedCountry, onCountriesLoaded, fillColor, strokeColor, globalStrokeColor, animationStart,
-    key, animationCycle, mapContainerRef
+    key, animationCycle, mapContainerRef, fullscreenTriggered
 }: any) => {
-    console.log("selectedCountry =================", selectedCountry);
     const svgRef = useRef<SVGSVGElement | null>(null);
     const [countriesData, setCountriesData] = useState<any[]>([]);
     const [lineFeatures, setLineFeatures] = useState<any[]>([]);
@@ -163,99 +152,6 @@ const Map2 = ({ selectedCountry, onCountriesLoaded, fillColor, strokeColor, glob
     }, [selectedCountry, lineFeatures]);
 
     // // Zoom to selected country
-    // useEffect(() => {
-    //     if (!selectedCountry || countriesData.length === 0 || !svgRef.current) return;
-
-    //     const svg = d3.select(svgRef.current);
-    //     const g = svg.select("g");
-
-    //     const projection = d3
-    //         .geoMercator()
-    //         .scale(width / 6.3)
-    //         .translate([width / 2, height / 1.65]);
-
-    //     const path = d3.geoPath().projection(projection);
-
-    //     const country = countriesData.find(
-    //         (c: any) => c.properties.name === selectedCountry
-    //     );
-    //     if (!country) return;
-
-    //     const bounds = path.bounds(country);
-    //     const dx = bounds[1][0] - bounds[0][0];
-    //     const dy = bounds[1][1] - bounds[0][1];
-    //     const x = (bounds[0][0] + bounds[1][0]) / 2;
-    //     const y = (bounds[0][1] + bounds[1][1]) / 2;
-    //     const scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
-    //     const translate = [width / 2 - scale * x, height / 2 - scale * y];
-
-    //     // Apply transform to entire <g>
-    //     // g.transition()
-    //     //     .duration(1000)
-    //     //     .attr("transform", `translate(${translate}) scale(${scale})`);
-    //     // 🧼 Step 1: Reset to original world view first
-    //     g.transition()
-    //         .duration(400) // adjust as needed
-    //         .attr("transform", `translate(0,0) scale(1)`)
-    //         .on("end", () => {
-    //             // 🧭 Step 2: Zoom to selected country after reset
-    //             g.transition()
-    //                 .duration(2000)
-    //                 .attr("transform", `translate(${translate}) scale(${scale})`);
-    //         });
-
-    //     // Set fill/stroke for countries
-    //     g.selectAll("path.country")
-    //         .transition()
-    //         .duration(1000)
-    //         .attr("fill", (d: any) => {
-    //             if (selectedCountry === "Pakistan") return "none";
-    //             if (d.properties.name === selectedCountry && selectedCountry === "India") return fillColor;
-    //             return d.properties.name === selectedCountry ? fillColor : "#0a192f";
-    //         })
-    //         .attr("stroke", (d: any) =>
-    //             d.properties.name === selectedCountry && selectedCountry !== "Pakistan" ? strokeColor : globalStrokeColor
-    //         )
-    //         .attr("stroke-width", (d: any) =>
-    //             d.properties.name === selectedCountry && selectedCountry !== "Pakistan" ? 1 : 0.6
-    //         );
-
-    //     // Show tooltip after 1 second
-    //     if (selectedCountry && country) {
-    //         const tooltip = d3.select("#tooltip");
-
-    //         const [x0, y0] = path.bounds(country)[0];
-    //         const [x1, y1] = path.bounds(country)[1];
-
-    //         const centerX = (x0 + x1) / 2;
-    //         const centerY = (y0 + y1) / 2;
-
-    //         const transform = d3.zoomIdentity
-    //             .translate(width / 2 - scale * centerX, height / 2 - scale * centerY)
-    //             .scale(scale);
-
-    //         const screenX = transform.applyX(centerX);
-    //         const screenY = transform.applyY(centerY);
-
-    //         // Delay tooltip appearance by 1 second (after zoom)
-    //         setTimeout(() => {
-    //             tooltip
-    //                 .text(selectedCountry)
-    //                 .style("left", `${screenX}px`)
-    //                 .style("top", `${screenY}px`)
-    //                 .style("visibility", "visible")
-    //                 .style("opacity", "1");
-
-    //             // Optional: Hide after 3 seconds
-    //             setTimeout(() => {
-    //                 tooltip.style("opacity", "0");
-    //                 setTimeout(() => {
-    //                     tooltip.style("visibility", "hidden");
-    //                 }, 500); // Allow fade-out transition
-    //             }, 3000);
-    //         }, 1000);
-    //     }
-    // }, [selectedCountry, animationCycle]);
     useEffect(() => {
         if (!svgRef.current || countriesData.length === 0) return;
 
@@ -405,6 +301,36 @@ const Map2 = ({ selectedCountry, onCountriesLoaded, fillColor, strokeColor, glob
             .ease(d3.easeLinear)
             .attr("stroke-dashoffset", 0);
     }, [animationCycle]);
+
+    // Effect to observe the screen size 
+    const hasMounted = useRef(false);
+
+    useEffect(() => {
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+            return; // ⛔ skip initial run
+        }
+
+        const svg = d3.select(svgRef.current);
+        if (!svgRef.current || !mapContainerRef.current) return;
+
+        const newWidth = mapContainerRef.current.clientWidth;
+        const newHeight = mapContainerRef.current.clientHeight;
+
+        svg.attr("width", newWidth).attr("height", newHeight);
+
+        const g = svg.select("g");
+
+        const projection = d3.geoMercator()
+            .scale(newWidth / 6.3)
+            .translate([newWidth / 2, newHeight / 1.65]);
+
+        const path = d3.geoPath().projection(projection);
+
+        g.selectAll("path.country").attr("d", path);
+        g.selectAll("path.line").attr("d", path);
+    }, [fullscreenTriggered]);
+
 
 
     return (
