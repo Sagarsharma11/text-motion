@@ -43,7 +43,7 @@ const GenerateVideoComponent: React.FC<GenerateVideoProps> = ({
     simulateProgress();
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/motion-videos/text/", {
+      const response = await fetch("https://devstream-backend.onrender.com/api/v1/motion-videos/text/", {
         method: "POST",
         headers: {
           Accept: "application/json",

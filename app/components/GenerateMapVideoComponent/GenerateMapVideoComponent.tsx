@@ -42,7 +42,7 @@ const GenerateMapVideoComponent: React.FC<GenerateVideoButtonProps> = ({
     simulateProgress();
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/motion-videos/maps/", {
+      const response = await fetch("https://devstream-backend.onrender.com/api/v1/motion-videos/maps/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
