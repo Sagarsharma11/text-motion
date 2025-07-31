@@ -89,6 +89,8 @@ const Page = () => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const [recording, setRecording] = useState(false);
 
   return (
     <div>
@@ -129,6 +131,7 @@ const Page = () => {
         key={mapKey}
         animationCycle={animationCycle}
         fullscreenTriggered={fullscreenTriggered}
+
       />
     </div>
   );

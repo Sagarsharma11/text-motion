@@ -1,5 +1,4 @@
-"use client";
-import React, { useState } from "react";
+import { useRef, useState } from "react";
 
 interface GenerateVideoButtonProps {
   selectedCountry: string;
@@ -42,7 +41,7 @@ const GenerateMapVideoComponent: React.FC<GenerateVideoButtonProps> = ({
     simulateProgress();
 
     try {
-      const response = await fetch("https://devstream-backend.onrender.com/api/v1/motion-videos/maps/", {
+      const response = await fetch("https://devstream-backend-1.onrender.com/api/v1/motion-videos/maps/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
