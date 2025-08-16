@@ -43,7 +43,7 @@ const GenerateMapVideoComponent: React.FC<GenerateVideoButtonProps> = ({
     try {
       const response = await fetch(
         // "https://devstream-backend-1.onrender.com/api/v1/motion-videos/maps/", 
-      "https://ee8d1ae36003.ngrok-free.app/api/v1/motion-videos/maps/",
+      "https://b3ff15fb24e9.ngrok-free.app/api/v1/motion-videos/maps/",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
