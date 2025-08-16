@@ -120,7 +120,7 @@ const Page = () => {
         globalColor={globalStrokeColor}
       />
 
-      <Map2
+      {/* <Map2
         mapContainerRef={mapContainerRef}
         selectedCountry={selectedCountry}
         onCountriesLoaded={setCountryList}
@@ -132,7 +132,7 @@ const Page = () => {
         animationCycle={animationCycle}
         fullscreenTriggered={fullscreenTriggered}
 
-      />
+      /> */}
     </div>
   );
 };
