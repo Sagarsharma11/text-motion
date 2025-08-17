@@ -131,7 +131,10 @@ const Page = () => {
         key={mapKey}
         animationCycle={animationCycle}
         fullscreenTriggered={fullscreenTriggered}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 796b725 (fixed recording)
       /> */}
     </div>
   );
